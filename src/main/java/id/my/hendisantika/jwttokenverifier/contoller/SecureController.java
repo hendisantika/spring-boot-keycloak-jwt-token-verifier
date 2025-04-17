@@ -1,7 +1,10 @@
 package id.my.hendisantika.jwttokenverifier.contoller;
 
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Map;
 
 /**
  * Created by IntelliJ IDEA.
@@ -17,4 +20,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/secure-api")
 public class SecureController {
+    @GetMapping
+    public Map sayHello() {
+        return Map.of("message", "Hello");
+    }
 }
