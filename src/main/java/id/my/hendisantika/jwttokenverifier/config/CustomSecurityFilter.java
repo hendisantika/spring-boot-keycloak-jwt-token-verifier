@@ -41,7 +41,7 @@ public class CustomSecurityFilter implements Filter {
     private final JwkProvider jwkProvider;
 
     public CustomSecurityFilter() throws MalformedURLException {
-        jwkProvider = new JwkProviderBuilder(new URL("http://localhost:8080/realms/master/protocol/openid-connect/certs")).build();
+        jwkProvider = new JwkProviderBuilder(new URL("http://localhost:7080/realms/Hanzou/protocol/openid-connect/certs")).build();
     }
 
     @Override
@@ -60,7 +60,7 @@ public class CustomSecurityFilter implements Filter {
             Algorithm algorithm = Algorithm.RSA256((RSAPublicKey) jwk.getPublicKey(), null);
 
             JWTVerifier verifier = JWT.require(algorithm)
-                    .withIssuer("http://localhost:8080/realms/master")
+                    .withIssuer("http://localhost:7080/realms/Hanzou")
                     .withAudience("backend-api")
                     .build();
             verifier.verify(decodedJWT);
