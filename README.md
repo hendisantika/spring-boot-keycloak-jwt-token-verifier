@@ -1,6 +1,56 @@
-# Testing the Spring Boot Keycloak JWT Token Verifier
+# Spring Boot Keycloak JWT Token Verifier
 
-This document provides information on how to test the Spring Boot Keycloak JWT Token Verifier application.
+This project demonstrates how to implement JWT token verification using Spring Boot and Keycloak. It includes a set of
+REST endpoints protected by different authorization levels.
+
+## Project Structure
+
+The project consists of the following main components:
+
+1. **Controllers**
+   - `EmployeeController`: Provides endpoints for employee operations with different authorization levels
+   - `SecureController`: A simple secured endpoint that requires authentication
+
+2. **Security Configuration**
+   - `SecurityConfiguration`: Configures Spring Security to require authentication for all requests
+   - `CustomSecurityFilter`: Verifies JWT tokens issued by Keycloak
+
+## Running the Application
+
+To run the application, you need a Keycloak server running. The project includes Docker Compose files to set up the
+required infrastructure.
+
+1. Start the Keycloak server:
+
+```bash
+docker-compose -f compose.yml up -d
+```
+
+2. Run the application:
+
+```bash
+./gradlew bootRun
+```
+
+3. Access the endpoints:
+
+- `http://localhost:8080/secure-api`: Requires authentication
+- `http://localhost:8080/employee/read`: Requires the `backend-api.employee` or `backend-api.supervisor` authority
+- `http://localhost:8080/employee/update`: Requires the `backend-api.manager` authority
+
+## Authentication
+
+To access the protected endpoints, you need to obtain a JWT token from Keycloak and include it in the Authorization
+header of your requests:
+
+```
+Authorization: Bearer <your-jwt-token>
+```
+
+The token must be issued by the Keycloak server running at `http://localhost:7080/realms/Hanzou` and must include the
+appropriate authorities.
+
+## Testing the Application
 
 ## Test Structure
 
@@ -43,7 +93,7 @@ The unit tests use Spring's testing support to test components in isolation:
 
 ### Integration Tests
 
-The integration tests use `@SpringBootTest` to load the entire application context and test the components together.
+The integration tests use `@WebMvcTest` to test the controllers with a mock security configuration.
 
 ### JWT Token Testing
 
