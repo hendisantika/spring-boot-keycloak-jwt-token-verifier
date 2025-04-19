@@ -20,9 +20,15 @@ import java.util.Map;
 @RestController
 @RequestMapping("/employee")
 public class EmployeeController {
-    @PreAuthorize("hasAuthority('postman-client.employee') or hasAuthority('postman-client.supervisor')")
+    @PreAuthorize("hasAuthority('backend-api.employee') or hasAuthority('backend-api.supervisor')")
     @RequestMapping("/read")
     public Map<String, String> readEmployee() {
         return Map.of("name", "Yuji", "role", "Developer", "age", "25");
+    }
+
+    @PreAuthorize("hasAuthority('backend-api.manager')")
+    @RequestMapping("/update")
+    public Map<String, String> updateEmployee() {
+        return Map.of("message", "Updated successfully");
     }
 }
