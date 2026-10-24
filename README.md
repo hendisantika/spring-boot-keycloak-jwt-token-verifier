@@ -1,7 +1,29 @@
 # Spring Boot Keycloak JWT Token Verifier
 
+[![Java CI with Gradle](https://github.com/hendisantika/spring-boot-keycloak-jwt-token-verifier/actions/workflows/gradle.yml/badge.svg)](https://github.com/hendisantika/spring-boot-keycloak-jwt-token-verifier/actions/workflows/gradle.yml)
+![Java](https://img.shields.io/badge/Java-25-orange)
+![Spring Boot](https://img.shields.io/badge/Spring%20Boot-4.1.1-brightgreen)
+![Gradle](https://img.shields.io/badge/Gradle-9.8.2-blue)
+
 This project demonstrates how to implement JWT token verification using Spring Boot and Keycloak. It includes a set of
 REST endpoints protected by different authorization levels.
+
+## Tech Stack
+
+| Component        | Version |
+|------------------|---------|
+| Java (toolchain) | 25      |
+| Spring Boot      | 4.1.1   |
+| Spring Security  | 7.x     |
+| Gradle (wrapper) | 9.8.2   |
+| Auth0 java-jwt   | 4.6.2   |
+| Auth0 jwks-rsa   | 0.24.1  |
+| Keycloak         | 26.2.0  |
+
+## Prerequisites
+
+- JDK 25 (the Gradle toolchain is set to Java 25; e.g. [Eclipse Temurin 25](https://adoptium.net/))
+- Docker and Docker Compose (for Keycloak and PostgreSQL)
 
 ## Project Structure
 
@@ -52,7 +74,7 @@ appropriate authorities.
 
 ## Testing the Application
 
-## Test Structure
+### Test Structure
 
 The tests are organized into the following categories:
 
@@ -67,7 +89,7 @@ The tests are organized into the following categories:
 3. **Integration Tests**
    - `JwtAuthenticationIntegrationTest`: Tests the complete authentication flow
 
-## Running the Tests
+### Running the Tests
 
 You can run the tests using Gradle:
 
@@ -81,21 +103,22 @@ To run a specific test class:
 ./gradlew test --tests "id.my.hendisantika.jwttokenverifier.contoller.EmployeeControllerTest"
 ```
 
-## Test Approach
+### Test Approach
 
-### Unit Tests
+#### Unit Tests
 
 The unit tests use Spring's testing support to test components in isolation:
 
-- `@WebMvcTest` for controller tests
-- `@MockMvc` for simulating HTTP requests
+- `@WebMvcTest` (`org.springframework.boot.webmvc.test.autoconfigure`, from `spring-boot-starter-webmvc-test`) for
+  controller tests
+- `MockMvc` for simulating HTTP requests
 - `@WithMockUser` for simulating authenticated users with specific authorities
 
-### Integration Tests
+#### Integration Tests
 
 The integration tests use `@WebMvcTest` to test the controllers with a mock security configuration.
 
-### JWT Token Testing
+#### JWT Token Testing
 
 The tests use `@WithMockUser` to simulate authentication instead of real JWT tokens. For a complete end-to-end test with
 real JWT tokens, you would need:
@@ -137,3 +160,20 @@ public class TestJwtConfiguration {
    }
 }
 ```
+
+## Continuous Integration
+
+The [Java CI with Gradle](.github/workflows/gradle.yml) workflow runs on every push and pull request to `main`:
+
+- **build**: sets up Temurin JDK 25 and runs `./gradlew build` (compile + all tests)
+- **dependency-submission**: submits the Gradle dependency graph so GitHub can raise Dependabot security alerts
+
+## Dependency Updates
+
+[Dependabot](.github/dependabot.yml) keeps dependencies current, using conventional commit prefixes:
+
+| Ecosystem      | Schedule                 | Grouping                                                            | Commit prefix   |
+|----------------|--------------------------|---------------------------------------------------------------------|-----------------|
+| Gradle         | Daily, 05:00 WIB         | `spring-boot`, `auth0`, and other `minor-and-patch` updates         | `build(deps)`   |
+| GitHub Actions | Daily, 05:00 WIB         | All actions in one PR                                               | `ci(deps)`      |
+| Docker Compose | Weekly (Monday) 05:00 WIB | PostgreSQL and Keycloak images in `compose.yml` / `compose3.yaml` | `chore(deps)`   |
